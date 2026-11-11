@@ -2,8 +2,11 @@ name: Bizim Ev TV M3U Guncelle
 
 on:
   schedule:
-    - cron: '0 */3 * * *' # Her 3 saatte bir linki tazeler
-  workflow_dispatch: # Manuel tetikleme butonu
+    - cron: '0 */3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   update-m3u:
