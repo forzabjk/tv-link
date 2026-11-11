@@ -16,19 +16,22 @@ jobs:
         uses: actions/checkout@v4
 
       - name: yt-dlp Kur
-        run: |
-          pip install -U yt-dlp
+        run: pip install -U yt-dlp
 
-      - name: Yayin Linkini Al ve M3U Olustur
+      - name: Yayin Linkini Al
+        env:
+          COOKIES: ${{ secrets.COOKIES }}
         run: |
-          STREAM_URL=$(yt-dlp --extractor-args "youtube:player_client=android,ios" -f best -g "https://youtube.com")
-          echo "#EXTM3U" > bizimev.m3u
-          echo "#EXTINF:-1 tvg-logo=\"\" group-title=\"Ulusal\",Bizim Ev TV" >> bizimev.m3u
-          echo "$STREAM_URL" >> bizimev.m3u
+          echo "$COOKIES" > cookies.txt
+          STREAM_URL=$(yt-dlp --cookies cookies.txt -f best -g "https://youtube.com")
+          echo "#EXTM3U" > bizimev.m3u8
+          echo "#EXT-X-STREAM-INF:BANDWIDTH=1280000" >> bizimev.m3u8
+          echo "$STREAM_URL" >> bizimev.m3u8
+          rm -f cookies.txt
 
       - name: GitHuba Kaydet
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add bizimev.m3u
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Yayin linki guncellendi" && git push)
+          git add bizimev.m3u8
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Guncellendi" && git push)
