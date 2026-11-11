@@ -1,0 +1,30 @@
+name: Link Guncelle
+on:
+  schedule:
+    - cron: '0 */4 * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Kurulum
+        run: pip install yt-dlp
+      - name: M3U Olustur
+        run: |
+          URL=$(yt-dlp --no-check-certificates --extractor-args "youtube:player_client=android" -g "https://youtube.com" | head -n 1)
+          if [[ $URL == http* ]]; then
+            echo "#EXTM3U" > bizimev.m3u
+            echo "#EXTINF:-1,BİZİMEV TV" >> bizimev.m3u
+            echo "$URL" >> bizimev.m3u
+          fi
+      - name: Kaydet
+        run: |
+          git config user.name "GitHub Bot"
+          git config user.email "bot@github.com"
+          git add bizimev.m3u
+          git commit -m "Link yenilendi" || exit 0
+          git push
