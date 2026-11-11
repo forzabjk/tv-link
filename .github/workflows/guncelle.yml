@@ -24,7 +24,7 @@ jobs:
         run: |
           echo "# Netscape HTTP Cookie File" > cookies.txt
           printf "%s\n" "$COOKIES" >> cookies.txt
-          STREAM_URL=$(yt-dlp --cookies cookies.txt --extractor-args "youtube:player_client=android_vr" -f b -g "https://youtube.com/@bizimevtv2000/live")
+          STREAM_URL=$(yt-dlp --cookies cookies.txt -f b -g "https://youtube.com/@bizimevtv2000/live")
           echo "#EXTM3U" > bizimev.m3u8
           echo "#EXT-X-STREAM-INF:BANDWIDTH=1280000" >> bizimev.m3u8
           echo "$STREAM_URL" >> bizimev.m3u8
