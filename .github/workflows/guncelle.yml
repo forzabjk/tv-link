@@ -24,7 +24,7 @@ jobs:
         run: |
           echo "# Netscape HTTP Cookie File" > cookies.txt
           printf "%s\n" "$COOKIES" >> cookies.txt
-          STREAM_URL=$(yt-dlp --cookies cookies.txt --extractor-args "youtube:player_client=tv,mweb" -f b -g "https://youtube.com")
+          STREAM_URL=$(yt-dlp --cookies cookies.txt --extractor-args "youtube:player_client=tv,mweb" -f b -g "https://youtube.com/watch?v=30M_F_2xy9Q")
           echo "#EXTM3U" > bizimev.m3u8
           echo "#EXT-X-STREAM-INF:BANDWIDTH=1280000" >> bizimev.m3u8
           echo "$STREAM_URL" >> bizimev.m3u8
