@@ -15,8 +15,10 @@ jobs:
       - name: Depoyu Cek
         uses: actions/checkout@v4
 
-      - name: yt-dlp Kur
-        run: pip install -U yt-dlp
+      - name: Node ve yt-dlp Kur
+        run: |
+          sudo apt-get update && sudo apt-get install -y nodejs
+          pip install -U yt-dlp
 
       - name: Yayin Linkini Al
         env:
@@ -24,7 +26,7 @@ jobs:
         run: |
           echo "# Netscape HTTP Cookie File" > cookies.txt
           printf "%s\n" "$COOKIES" >> cookies.txt
-          STREAM_URL=$(yt-dlp --cookies cookies.txt -f b -g "https://youtube.com")
+          STREAM_URL=$(yt-dlp --cookies cookies.txt --extractor-args "youtube:player_client=tv,mweb" -f b -g "https://youtube.com")
           echo "#EXTM3U" > bizimev.m3u8
           echo "#EXT-X-STREAM-INF:BANDWIDTH=1280000" >> bizimev.m3u8
           echo "$STREAM_URL" >> bizimev.m3u8
