@@ -15,10 +15,8 @@ jobs:
       - name: Depoyu Cek
         uses: actions/checkout@v4
 
-      - name: Node ve yt-dlp Kur
-        run: |
-          sudo apt-get update && sudo apt-get install -y nodejs
-          pip install -U yt-dlp
+      - name: yt-dlp Kur
+        run: pip install -U yt-dlp
 
       - name: Yayin Linkini Al
         env:
