@@ -22,8 +22,9 @@ jobs:
         env:
           COOKIES: ${{ secrets.COOKIES }}
         run: |
-          echo "$COOKIES" > cookies.txt
-          STREAM_URL=$(yt-dlp --cookies cookies.txt -f best -g "https://youtube.com")
+          echo "# Netscape HTTP Cookie File" > cookies.txt
+          printf "%s\n" "$COOKIES" >> cookies.txt
+          STREAM_URL=$(yt-dlp --cookies cookies.txt -f b -g "https://youtube.com")
           echo "#EXTM3U" > bizimev.m3u8
           echo "#EXT-X-STREAM-INF:BANDWIDTH=1280000" >> bizimev.m3u8
           echo "$STREAM_URL" >> bizimev.m3u8
