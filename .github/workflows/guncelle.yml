@@ -1,31 +1,31 @@
-name: Link Guncelle
+name: Bizim Ev TV M3U Guncelle
+
 on:
   schedule:
-    - cron: '0 */4 * * *'
-  workflow_dispatch:
+    - cron: '0 */3 * * *' # Her 3 saatte bir linki tazeler
+  workflow_dispatch: # Manuel tetikleme butonu
 
 jobs:
-  build:
+  update-m3u:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
-      - uses: actions/checkout@v4
-      - name: Kurulum
-        run: pip install yt-dlp
-      - name: M3U Olustur
-        run: |
-          URL=$(yt-dlp --no-check-certificates --extractor-args "youtube:player_client=android" -g "https://youtube.com" | head -n 1)
-          if [[ $URL == http* ]]; then
-            echo "#EXTM3U" > bizimev.m3u
-            echo "#EXTINF:-1,BİZİMEV TV" >> bizimev.m3u
-            echo "$URL" >> bizimev.m3u
-          fi
-      - name: Kaydet
-        run: |
-          git config user.name "GitHub Bot"
-          git config user.email "bot@github.com"
-          git add bizimev.m3u
-          git commit -m "Link yenilendi" || exit 0
-          git push
+      - name: Depoyu Cek
+        uses: actions/checkout@v4
 
+      - name: yt-dlp Kur
+        run: |
+          pip install -U yt-dlp
+
+      - name: Yayin Linkini Al ve M3U Olustur
+        run: |
+          STREAM_URL=$(yt-dlp --extractor-args "youtube:player_client=android,ios" -f best -g "https://youtube.com")
+          echo "#EXTM3U" > bizimev.m3u
+          echo "#EXTINF:-1 tvg-logo=\"\" group-title=\"Ulusal\",Bizim Ev TV" >> bizimev.m3u
+          echo "$STREAM_URL" >> bizimev.m3u
+
+      - name: GitHuba Kaydet
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add bizimev.m3u
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Yayin linki guncellendi" && git push)
