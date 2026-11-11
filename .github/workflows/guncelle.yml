@@ -28,3 +28,4 @@ jobs:
           git add bizimev.m3u
           git commit -m "Link yenilendi" || exit 0
           git push
+
