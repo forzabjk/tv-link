@@ -28,8 +28,6 @@ jobs:
           HOST="https://youtube.com"
           mkdir -p Kanallar
 
-
-
           # 1. Bizim Ev TV
           URL_BIZIMEV="$HOST/@bizimevtv2000/live"
           STREAM_BIZIMEV=$(yt-dlp --cookies cookies.txt --remote-components ejs:github -f b -g "$URL_BIZIMEV") || true
@@ -39,15 +37,14 @@ jobs:
             echo "$STREAM_BIZIMEV" >> Kanallar/bizimev.m3u8
           fi
 
-
-          # 2. Beyaz TV (Resmi Site - Tarayici Kimligi ile Otomatik)
+          # 2. Beyaz TV
           UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
           URL_BEYAZTV="https://beyaztv.com.tr/canli-yayin/"
-          STREAM_BEYAZTV=$(curl -sL -A "$UA" -e "https://beyaztv.com.tr" "$URL_BEYAZTV" | grep -oE 'https://[^"'\'' ]+\.m3u8[^"'\'' ]*' | head -n 1) || true
-          if [[ "$STREAM_BEYAZTV" == http* ]]; then
+          MASTER=$(curl -sL -A "$UA" -e "https://beyaztv.com.tr" "$URL_BEYAZTV" | grep -oE 'https://[^"'\'' ]+\.m3u8[^"'\'' ]*' | head -n 1) || true
+          if [[ "$MASTER" == http* ]]; then
             echo "#EXTM3U" > Kanallar/beyaztv.m3u8
             echo "#EXT-X-STREAM-INF:BANDWIDTH=5000000" >> Kanallar/beyaztv.m3u8
-            echo "$STREAM_BEYAZTV" >> Kanallar/beyaztv.m3u8
+            echo "$MASTER" >> Kanallar/beyaztv.m3u8
           fi
 
           rm -f cookies.txt
