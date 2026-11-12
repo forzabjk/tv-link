@@ -40,14 +40,22 @@ jobs:
           fi
 
 
-          # 2. Beyaz TV
-          URL_BEYAZTV="https://beyaztv.com.tr/canli-yayin/"
-          STREAM_BEYAZTV=$(curl -sL "$URL_BEYAZTV" | grep -oE 'https://[^"'\'' ]+\.m3u8[^"'\'' ]*' | head -n 1) || true
-          if [ -n "$STREAM_BEYAZTV" ]; then
+          # 2. Beyaz TV (Resmi Site - Doğrudan 1080p Akış)
+          URL_BEYAZTV="https://www.beyaztv.com.tr/canli-yayin/"
+          MASTER=$(curl -sL "$URL_BEYAZTV" | grep -oE 'https://[^"'\'' ]+\.m3u8[^"'\'' ]*' | head -n 1) || true
+          if [ -n "$MASTER" ]; then
+            SUB=$(curl -sL -H "Referer: https://www.beyaztv.com.tr/" "$MASTER" | grep -v '^#' | tail -n 1)
+            BASE=$(echo "$MASTER" | sed 's|/[^/]*$||')
+            if [[ "$SUB" == http* ]]; then
+              STREAM_BEYAZTV="$SUB"
+            else
+              STREAM_BEYAZTV="$BASE/$SUB"
+            fi
             echo "#EXTM3U" > Kanallar/beyaztv.m3u8
             echo "#EXT-X-STREAM-INF:BANDWIDTH=5000000" >> Kanallar/beyaztv.m3u8
             echo "$STREAM_BEYAZTV" >> Kanallar/beyaztv.m3u8
           fi
+
 
 
           rm -f cookies.txt
