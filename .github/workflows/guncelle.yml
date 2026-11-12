@@ -26,6 +26,7 @@ jobs:
           echo "# Netscape HTTP Cookie File" > cookies.txt
           printf "%s\n" "$COOKIES" >> cookies.txt
           HOST="https://youtube.com"
+          LIVE_TAG="#EXT-X-START:TIME-OFFSET=-10,PRECISE=YES"
           mkdir -p Kanallar
 
           # 1. Bizim Ev TV
@@ -33,20 +34,21 @@ jobs:
           STREAM_BIZIMEV=$(yt-dlp --cookies cookies.txt --remote-components ejs:github -f b -g "$URL_BIZIMEV") || true
           if [ -n "$STREAM_BIZIMEV" ]; then
             echo "#EXTM3U" > Kanallar/bizimev.m3u8
+            echo "$LIVE_TAG" >> Kanallar/bizimev.m3u8
             echo "#EXT-X-STREAM-INF:BANDWIDTH=1280000" >> Kanallar/bizimev.m3u8
             echo "$STREAM_BIZIMEV" >> Kanallar/bizimev.m3u8
           fi
 
-          # 2. Beyaz TV (Saatte 1 Otomatik Guncelleme - Acik 1080p)
+          # 2. Beyaz TV
           B_HOST="https://beyaztv-live.daioncdn"
           URL_BEYAZTV="${B_HOST}.net/beyaztv/beyaztv_1080p.m3u8"
           STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$URL_BEYAZTV")
           if [ "$STATUS" == "200" ]; then
             echo "#EXTM3U" > Kanallar/beyaztv.m3u8
+            echo "$LIVE_TAG" >> Kanallar/beyaztv.m3u8
             echo "#EXT-X-STREAM-INF:BANDWIDTH=5000000,RESOLUTION=1920x1080" >> Kanallar/beyaztv.m3u8
             echo "$URL_BEYAZTV" >> Kanallar/beyaztv.m3u8
           fi
-
 
           rm -f cookies.txt
 
@@ -56,3 +58,4 @@ jobs:
           git config --local user.name "GitHub Action"
           git add Kanallar/*.m3u8
           git diff --quiet && git diff --staged --quiet || (git commit -m "Guncellendi" && git push)
+          
