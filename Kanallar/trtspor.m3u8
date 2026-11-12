@@ -1,4 +1,4 @@
 #EXTM3U
-#EXT-X-START:TIME-OFFSET=-10,PRECISE=YES
-#EXT-X-STREAM-INF:BANDWIDTH=5000000,RESOLUTION=1920x1080
-https://trt.com.tr
+#EXTVLCOPT:http-referrer=https://trtspor.com.tr
+#EXTVLCOPT:http-user-agent=
+https://tv-trtspor1.medya.trt.com.tr/master_1080.m3u8

@@ -1,4 +1,4 @@
 #EXTM3U
-#EXT-X-START:TIME-OFFSET=-10,PRECISE=YES
-#EXT-X-STREAM-INF:BANDWIDTH=5000000,RESOLUTION=1920x1080
-https://tv5monde.com
+#EXTVLCOPT:http-referrer=https://tv5monde.com
+#EXTVLCOPT:http-user-agent=
+https://ott.tv5monde.com/Content/HLS/Live/channel(europe)/variant.m3u8
