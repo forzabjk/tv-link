@@ -26,15 +26,17 @@ jobs:
           echo "# Netscape HTTP Cookie File" > cookies.txt
           printf "%s\n" "$COOKIES" >> cookies.txt
           HOST="https://youtube.com"
+          mkdir -p Kanallar
+
 
 
           # 1. Bizim Ev TV
           URL_BIZIMEV="$HOST/@bizimevtv2000/live"
           STREAM_BIZIMEV=$(yt-dlp --cookies cookies.txt --remote-components ejs:github -f b -g "$URL_BIZIMEV") || true
           if [ -n "$STREAM_BIZIMEV" ]; then
-            echo "#EXTM3U" > bizimev.m3u8
-            echo "#EXT-X-STREAM-INF:BANDWIDTH=1280000" >> bizimev.m3u8
-            echo "$STREAM_BIZIMEV" >> bizimev.m3u8
+            echo "#EXTM3U" > Kanallar/bizimev.m3u8
+            echo "#EXT-X-STREAM-INF:BANDWIDTH=1280000" >> Kanallar/bizimev.m3u8
+            echo "$STREAM_BIZIMEV" >> Kanallar/bizimev.m3u8
           fi
 
 
@@ -42,9 +44,9 @@ jobs:
           URL_BEYAZTV="https://beyaztv.com.tr/canli-yayin/"
           STREAM_BEYAZTV=$(curl -sL "$URL_BEYAZTV" | grep -oE 'https://[^"'\'' ]+\.m3u8[^"'\'' ]*' | head -n 1) || true
           if [ -n "$STREAM_BEYAZTV" ]; then
-            echo "#EXTM3U" > beyaztv.m3u8
-            echo "#EXT-X-STREAM-INF:BANDWIDTH=5000000" >> beyaztv.m3u8
-            echo "$STREAM_BEYAZTV" >> beyaztv.m3u8
+            echo "#EXTM3U" > Kanallar/beyaztv.m3u8
+            echo "#EXT-X-STREAM-INF:BANDWIDTH=5000000" >> Kanallar/beyaztv.m3u8
+            echo "$STREAM_BEYAZTV" >> Kanallar/beyaztv.m3u8
           fi
 
 
@@ -54,5 +56,5 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add *.m3u8
+          git add Kanallar/*.m3u8
           git diff --quiet && git diff --staged --quiet || (git commit -m "Guncellendi" && git push)
