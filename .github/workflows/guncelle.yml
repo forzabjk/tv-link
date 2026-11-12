@@ -25,13 +25,11 @@ jobs:
         run: |
           echo "# Netscape HTTP Cookie File" > cookies.txt
           printf "%s\n" "$COOKIES" >> cookies.txt
-          HOST="https://youtube.com"
           LIVE_TAG="#EXT-X-START:TIME-OFFSET=-10,PRECISE=YES"
-          UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
           mkdir -p Kanallar
 
           # 1. Bizim Ev TV
-          URL_BIZIMEV="$HOST/@bizimevtv2000/live"
+          URL_BIZIMEV="https://youtube.com/@bizimevtv2000/live"
           STREAM_BIZIMEV=$(yt-dlp --cookies cookies.txt --remote-components ejs:github -f b -g "$URL_BIZIMEV") || true
           if [ -n "$STREAM_BIZIMEV" ]; then
             echo "#EXTM3U" > Kanallar/bizimev.m3u8
@@ -41,9 +39,8 @@ jobs:
           fi
 
           # 2. Beyaz TV
-          B_HOST="https://beyaztv-live.daioncdn"
-          URL_BEYAZTV="${B_HOST}.net/beyaztv/beyaztv_1080p.m3u8"
-          STATUS_BEYAZ=$(curl -k -s -A "$UA" -o /dev/null -w "%{http_code}" "$URL_BEYAZTV") || true
+          URL_BEYAZTV="https://beyaztv-live.daioncdn.net/beyaztv/beyaztv_1080p.m3u8"
+          STATUS_BEYAZ=$(curl -s -o /dev/null -w "%{http_code}" "$URL_BEYAZTV") || true
           if [ "$STATUS_BEYAZ" == "200" ]; then
             echo "#EXTM3U" > Kanallar/beyaztv.m3u8
             echo "$LIVE_TAG" >> Kanallar/beyaztv.m3u8
@@ -51,22 +48,23 @@ jobs:
             echo "$URL_BEYAZTV" >> Kanallar/beyaztv.m3u8
           fi
 
-          # 3. TRT Spor
-          URL_TRTSPOR="https://tv-trtspor1.medya.trt.com.tr/master.m3u8"
-          STATUS_TRT=$(curl -k -s -A "$UA" -o /dev/null -w "%{http_code}" "$URL_TRTSPOR") || true
+          # 3. TRT Spor 1080p
+          URL_TRTSPOR="https://tv-trtspor1.medya.trt.com.tr/master_1080.m3u8"
+          STATUS_TRT=$(curl -s -o /dev/null -w "%{http_code}" "$URL_TRTSPOR") || true
           if [ "$STATUS_TRT" == "200" ]; then
             echo "#EXTM3U" > Kanallar/trtspor.m3u8
+            echo "$LIVE_TAG" >> Kanallar/trtspor.m3u8
+            echo "#EXT-X-STREAM-INF:BANDWIDTH=6969600,RESOLUTION=1920x1080" >> Kanallar/trtspor.m3u8
             echo "$URL_TRTSPOR" >> Kanallar/trtspor.m3u8
           fi
 
-          # 4. TV5MONDE Europe
+          # 4. TV5MONDE Europe 1080p
           URL_TV5="https://ott.tv5monde.com/Content/HLS/Live/channel(europe)/variant.m3u8"
-          STATUS_TV5=$(curl -k -s -A "$UA" -o /dev/null -w "%{http_code}" "$URL_TV5") || true
+          STATUS_TV5=$(curl -s -o /dev/null -w "%{http_code}" "$URL_TV5") || true
           if [ "$STATUS_TV5" == "200" ]; then
             echo "#EXTM3U" > Kanallar/tv5monde.m3u8
             echo "$URL_TV5" >> Kanallar/tv5monde.m3u8
           fi
-          
 
           rm -f cookies.txt
 
