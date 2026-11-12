@@ -51,27 +51,22 @@ jobs:
             echo "$URL_BEYAZTV" >> Kanallar/beyaztv.m3u8
           fi
 
-          # 3. TRT Spor 1080p
-          T_HOST="https://medya.trt"
-          URL_TRTSPOR="${T_HOST}.com.tr/master_1080.m3u8"
+          # 3. TRT Spor
+          URL_TRTSPOR="https://tv-trtspor1.medya.trt.com.tr/master.m3u8"
           STATUS_TRT=$(curl -k -s -A "$UA" -o /dev/null -w "%{http_code}" "$URL_TRTSPOR") || true
           if [ "$STATUS_TRT" == "200" ]; then
             echo "#EXTM3U" > Kanallar/trtspor.m3u8
-            echo "$LIVE_TAG" >> Kanallar/trtspor.m3u8
-            echo "#EXT-X-STREAM-INF:BANDWIDTH=5000000,RESOLUTION=1920x1080" >> Kanallar/trtspor.m3u8
             echo "$URL_TRTSPOR" >> Kanallar/trtspor.m3u8
           fi
 
-          # 4. TV5MONDE Europe 1080p
-          V_HOST="https://ott.tv5monde"
-          URL_TV5="${V_HOST}.com/Content/HLS/Live/channel(europe)/index.m3u8"
+          # 4. TV5MONDE Europe
+          URL_TV5="https://ott.tv5monde.com/Content/HLS/Live/channel(europe)/variant.m3u8"
           STATUS_TV5=$(curl -k -s -A "$UA" -o /dev/null -w "%{http_code}" "$URL_TV5") || true
           if [ "$STATUS_TV5" == "200" ]; then
             echo "#EXTM3U" > Kanallar/tv5monde.m3u8
-            echo "$LIVE_TAG" >> Kanallar/tv5monde.m3u8
-            echo "#EXT-X-STREAM-INF:BANDWIDTH=5000000,RESOLUTION=1920x1080" >> Kanallar/tv5monde.m3u8
             echo "$URL_TV5" >> Kanallar/tv5monde.m3u8
           fi
+          
 
           rm -f cookies.txt
 
