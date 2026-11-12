@@ -42,8 +42,8 @@ jobs:
           # 2. Beyaz TV
           B_HOST="https://beyaztv-live.daioncdn"
           URL_BEYAZTV="${B_HOST}.net/beyaztv/beyaztv_1080p.m3u8"
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$URL_BEYAZTV")
-          if [ "$STATUS" == "200" ]; then
+          STATUS_BEYAZ=$(curl -k -s -o /dev/null -w "%{http_code}" "$URL_BEYAZTV") || true
+          if [ "$STATUS_BEYAZ" == "200" ]; then
             echo "#EXTM3U" > Kanallar/beyaztv.m3u8
             echo "$LIVE_TAG" >> Kanallar/beyaztv.m3u8
             echo "#EXT-X-STREAM-INF:BANDWIDTH=5000000,RESOLUTION=1920x1080" >> Kanallar/beyaztv.m3u8
@@ -52,10 +52,10 @@ jobs:
 
           # 3. TRT Spor 1080p
           URL_TRTSPOR="https://trt.com.tr"
-          STATUS_TRT=$(curl -s -o /dev/null -w "%{http_code}" "$URL_TRTSPOR")
+          STATUS_TRT=$(curl -k -s -o /dev/null -w "%{http_code}" "$URL_TRTSPOR") || true
           if [ "$STATUS_TRT" != "200" ]; then
-            URL_TRTSPOR="https://tv-trtspor1.medya.trt.com.tr/master.m3u8"
-            STATUS_TRT=$(curl -s -o /dev/null -w "%{http_code}" "$URL_TRTSPOR")
+            URL_TRTSPOR="https://trt.com.tr"
+            STATUS_TRT=$(curl -k -s -o /dev/null -w "%{http_code}" "$URL_TRTSPOR") || true
           fi
           if [ "$STATUS_TRT" == "200" ]; then
             echo "#EXTM3U" > Kanallar/trtspor.m3u8
@@ -65,11 +65,11 @@ jobs:
           fi
 
           # 4. TV5MONDE Europe 1080p (Yedekli)
-          URL_TV5="https://ott.tv5monde.com/Content/HLS/Live/channel(europe)/variant.m3u8"
-          STATUS_TV5=$(curl -s -o /dev/null -w "%{http_code}" "$URL_TV5")
+          URL_TV5="https://tv5monde.com"
+          STATUS_TV5=$(curl -k -s -o /dev/null -w "%{http_code}" "$URL_TV5") || true
           if [ "$STATUS_TV5" != "200" ]; then
-            URL_TV5="https://ert-ucdn.broadpeak-aas.com/bpk-tv/TV5/default/index.m3u8"
-            STATUS_TV5=$(curl -s -o /dev/null -w "%{http_code}" "$URL_TV5")
+            URL_TV5="https://broadpeak-aas.com"
+            STATUS_TV5=$(curl -k -s -o /dev/null -w "%{http_code}" "$URL_TV5") || true
           fi
           if [ "$STATUS_TV5" == "200" ]; then
             echo "#EXTM3U" > Kanallar/tv5monde.m3u8
@@ -77,8 +77,6 @@ jobs:
             echo "#EXT-X-STREAM-INF:BANDWIDTH=5000000,RESOLUTION=1920x1080" >> Kanallar/tv5monde.m3u8
             echo "$URL_TV5" >> Kanallar/tv5monde.m3u8
           fi
-          
-          
 
           rm -f cookies.txt
 
