@@ -1,4 +1,4 @@
-name: Bizim Ev TV M3U Guncelle
+name: TV Kanallari M3U Guncelle
 
 on:
   schedule:
@@ -19,22 +19,33 @@ jobs:
         uses: denoland/setup-deno@v2
       - run: pip install -U yt-dlp
 
-      - name: Yayin Linkini Al
+      - name: Yayin Linklerini Al
         env:
           COOKIES: ${{ secrets.COOKIES }}
         run: |
           echo "# Netscape HTTP Cookie File" > cookies.txt
           printf "%s\n" "$COOKIES" >> cookies.txt
-          URL="https://youtube.com/@bizimevtv2000/live"
-          STREAM_URL=$(yt-dlp --cookies cookies.txt --remote-components ejs:github -f b -g "$URL")
+          HOST="https://youtube.com"
+
+          # 1. Bizim Ev TV
+          URL_BIZIMEV="$HOST/@bizimevtv2000/live"
+          STREAM_BIZIMEV=$(yt-dlp --cookies cookies.txt --remote-components ejs:github -f b -g "$URL_BIZIMEV")
           echo "#EXTM3U" > bizimev.m3u8
           echo "#EXT-X-STREAM-INF:BANDWIDTH=1280000" >> bizimev.m3u8
-          echo "$STREAM_URL" >> bizimev.m3u8
+          echo "$STREAM_BIZIMEV" >> bizimev.m3u8
+
+          # 2. Beyaz TV
+          URL_BEYAZTV="$HOST/@BeyazTV/live"
+          STREAM_BEYAZTV=$(yt-dlp --cookies cookies.txt --remote-components ejs:github -f b -g "$URL_BEYAZTV")
+          echo "#EXTM3U" > beyaztv.m3u8
+          echo "#EXT-X-STREAM-INF:BANDWIDTH=5000000" >> beyaztv.m3u8
+          echo "$STREAM_BEYAZTV" >> beyaztv.m3u8
+
           rm -f cookies.txt
 
       - name: GitHuba Kaydet
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add bizimev.m3u8
+          git add bizimev.m3u8 beyaztv.m3u8
           git diff --quiet && git diff --staged --quiet || (git commit -m "Guncellendi" && git push)
