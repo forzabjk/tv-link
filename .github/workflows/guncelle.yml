@@ -27,16 +27,20 @@ jobs:
           printf "%s\n" "$COOKIES" >> cookies.txt
           HOST="https://youtube.com"
 
+
           # 1. Bizim Ev TV
           URL_BIZIMEV="$HOST/@bizimevtv2000/live"
-          STREAM_BIZIMEV=$(yt-dlp --cookies cookies.txt --remote-components ejs:github -f b -g "$URL_BIZIMEV")
-          echo "#EXTM3U" > bizimev.m3u8
-          echo "#EXT-X-STREAM-INF:BANDWIDTH=1280000" >> bizimev.m3u8
-          echo "$STREAM_BIZIMEV" >> bizimev.m3u8
+          STREAM_BIZIMEV=$(yt-dlp --cookies cookies.txt --remote-components ejs:github -f b -g "$URL_BIZIMEV") || true
+          if [ -n "$STREAM_BIZIMEV" ]; then
+            echo "#EXTM3U" > bizimev.m3u8
+            echo "#EXT-X-STREAM-INF:BANDWIDTH=1280000" >> bizimev.m3u8
+            echo "$STREAM_BIZIMEV" >> bizimev.m3u8
+          fi
+
 
           # 2. Beyaz TV
-          URL_BEYAZTV="$HOST/@BeyazTV/live"
-          STREAM_BEYAZTV=$(yt-dlp --cookies cookies.txt --remote-components ejs:github -f b -g "$URL_BEYAZTV")
+          URL_BEYAZTV="$HOST/@BeyazTV/live/canli-yayin/"
+          STREAM_BEYAZTV=$(yt-dlp --cookies cookies.txt --remote-components ejs:github -f b -g "$URL_BEYAZTV") || true
           echo "#EXTM3U" > beyaztv.m3u8
           echo "#EXT-X-STREAM-INF:BANDWIDTH=5000000" >> beyaztv.m3u8
           echo "$STREAM_BEYAZTV" >> beyaztv.m3u8
