@@ -48,30 +48,20 @@ jobs:
             echo "$URL_BEYAZTV" >> Kanallar/beyaztv.m3u8
           fi
 
-          # 3. TRT Spor 1080p (Saatlik Kontrollu)
-          UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
+          # 3. TRT Spor 1080p (Referer Korumali)
           URL_TRTSPOR="https://tv-trtspor1.medya.trt.com.tr/master_1080.m3u8"
-          STATUS_TRT=$(curl -k -s -A "$UA" -o /dev/null -w "%{http_code}" "$URL_TRTSPOR") || true
-          if [ "$STATUS_TRT" == "200" ]; then
-            echo "#EXTM3U" > Kanallar/trtspor.m3u8
-            echo "$LIVE_TAG" >> Kanallar/trtspor.m3u8
-            echo "#EXT-X-STREAM-INF:BANDWIDTH=6969600,RESOLUTION=1920x1080" >> Kanallar/trtspor.m3u8
-            echo "$URL_TRTSPOR" >> Kanallar/trtspor.m3u8
-          fi
+          echo "#EXTM3U" > Kanallar/trtspor.m3u8
+          echo "#EXTVLCOPT:http-referrer=https://trtspor.com.tr" >> Kanallar/trtspor.m3u8
+          echo "#EXTVLCOPT:http-user-agent=$UA" >> Kanallar/trtspor.m3u8
+          echo "$URL_TRTSPOR" >> Kanallar/trtspor.m3u8
 
-          # 4. TV5MONDE Europe 1080p (Saatlik Kontrollu ve Yedekli)
+          # 4. TV5MONDE Europe 1080p (Referer Korumali)
           URL_TV5="https://ott.tv5monde.com/Content/HLS/Live/channel(europe)/variant.m3u8"
-          STATUS_TV5=$(curl -k -s -A "$UA" -o /dev/null -w "%{http_code}" "$URL_TV5") || true
-          if [ "$STATUS_TV5" != "200" ]; then
-            URL_TV5="https://ert-ucdn.broadpeak-aas.com/bpk-tv/TV5/default/index.m3u8"
-            STATUS_TV5=$(curl -k -s -A "$UA" -o /dev/null -w "%{http_code}" "$URL_TV5") || true
-          fi
-          if [ "$STATUS_TV5" == "200" ]; then
-            echo "#EXTM3U" > Kanallar/tv5monde.m3u8
-            echo "$URL_TV5" >> Kanallar/tv5monde.m3u8
-          fi
+          echo "#EXTM3U" > Kanallar/tv5monde.m3u8
+          echo "#EXTVLCOPT:http-referrer=https://tv5monde.com" >> Kanallar/tv5monde.m3u8
+          echo "#EXTVLCOPT:http-user-agent=$UA" >> Kanallar/tv5monde.m3u8
+          echo "$URL_TV5" >> Kanallar/tv5monde.m3u8
           
-
           rm -f cookies.txt
 
       - name: GitHuba Kaydet
