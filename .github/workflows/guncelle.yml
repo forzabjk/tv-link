@@ -27,6 +27,7 @@ jobs:
           printf "%s\n" "$COOKIES" >> cookies.txt
           HOST="https://youtube.com"
           LIVE_TAG="#EXT-X-START:TIME-OFFSET=-10,PRECISE=YES"
+          UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
           mkdir -p Kanallar
 
           # 1. Bizim Ev TV
@@ -42,7 +43,7 @@ jobs:
           # 2. Beyaz TV
           B_HOST="https://beyaztv-live.daioncdn"
           URL_BEYAZTV="${B_HOST}.net/beyaztv/beyaztv_1080p.m3u8"
-          STATUS_BEYAZ=$(curl -k -s -o /dev/null -w "%{http_code}" "$URL_BEYAZTV") || true
+          STATUS_BEYAZ=$(curl -k -s -A "$UA" -o /dev/null -w "%{http_code}" "$URL_BEYAZTV") || true
           if [ "$STATUS_BEYAZ" == "200" ]; then
             echo "#EXTM3U" > Kanallar/beyaztv.m3u8
             echo "$LIVE_TAG" >> Kanallar/beyaztv.m3u8
@@ -51,18 +52,26 @@ jobs:
           fi
 
           # 3. TRT Spor 1080p
-          URL_TRTSPOR="https://trt.com.tr"
-          echo "#EXTM3U" > Kanallar/trtspor.m3u8
-          echo "$LIVE_TAG" >> Kanallar/trtspor.m3u8
-          echo "#EXT-X-STREAM-INF:BANDWIDTH=5000000,RESOLUTION=1920x1080" >> Kanallar/trtspor.m3u8
-          echo "$URL_TRTSPOR" >> Kanallar/trtspor.m3u8
+          T_HOST="https://medya.trt"
+          URL_TRTSPOR="${T_HOST}.com.tr/master_1080.m3u8"
+          STATUS_TRT=$(curl -k -s -A "$UA" -o /dev/null -w "%{http_code}" "$URL_TRTSPOR") || true
+          if [ "$STATUS_TRT" == "200" ]; then
+            echo "#EXTM3U" > Kanallar/trtspor.m3u8
+            echo "$LIVE_TAG" >> Kanallar/trtspor.m3u8
+            echo "#EXT-X-STREAM-INF:BANDWIDTH=5000000,RESOLUTION=1920x1080" >> Kanallar/trtspor.m3u8
+            echo "$URL_TRTSPOR" >> Kanallar/trtspor.m3u8
+          fi
 
           # 4. TV5MONDE Europe 1080p
-          URL_TV5="https://tv5monde.com"
-          echo "#EXTM3U" > Kanallar/tv5monde.m3u8
-          echo "$LIVE_TAG" >> Kanallar/tv5monde.m3u8
-          echo "#EXT-X-STREAM-INF:BANDWIDTH=5000000,RESOLUTION=1920x1080" >> Kanallar/tv5monde.m3u8
-          echo "$URL_TV5" >> Kanallar/tv5monde.m3u8
+          V_HOST="https://ott.tv5monde"
+          URL_TV5="${V_HOST}.com/Content/HLS/Live/channel(europe)/index.m3u8"
+          STATUS_TV5=$(curl -k -s -A "$UA" -o /dev/null -w "%{http_code}" "$URL_TV5") || true
+          if [ "$STATUS_TV5" == "200" ]; then
+            echo "#EXTM3U" > Kanallar/tv5monde.m3u8
+            echo "$LIVE_TAG" >> Kanallar/tv5monde.m3u8
+            echo "#EXT-X-STREAM-INF:BANDWIDTH=5000000,RESOLUTION=1920x1080" >> Kanallar/tv5monde.m3u8
+            echo "$URL_TV5" >> Kanallar/tv5monde.m3u8
+          fi
 
           rm -f cookies.txt
 
@@ -72,3 +81,4 @@ jobs:
           git config --local user.name "GitHub Action"
           git add Kanallar/*.m3u8
           git diff --quiet && git diff --staged --quiet || (git commit -m "Guncellendi" && git push)
+          
