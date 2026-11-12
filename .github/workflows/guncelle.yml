@@ -40,12 +40,13 @@ jobs:
 
           # 2. Beyaz TV
           URL_BEYAZTV="https://beyaztv.com.tr/canli-yayin/"
-          STREAM_BEYAZTV=$(yt-dlp -f b -g "$URL_BEYAZTV") || true
+          STREAM_BEYAZTV=$(curl -sL "$URL_BEYAZTV" | grep -oE 'https://[^"'\'' ]+\.m3u8[^"'\'' ]*' | head -n 1) || true
           if [ -n "$STREAM_BEYAZTV" ]; then
             echo "#EXTM3U" > beyaztv.m3u8
             echo "#EXT-X-STREAM-INF:BANDWIDTH=5000000" >> beyaztv.m3u8
             echo "$STREAM_BEYAZTV" >> beyaztv.m3u8
           fi
+
 
           rm -f cookies.txt
 
@@ -53,5 +54,5 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add bizimev.m3u8 beyaztv.m3u8
+          git add *.m3u8
           git diff --quiet && git diff --staged --quiet || (git commit -m "Guncellendi" && git push)
