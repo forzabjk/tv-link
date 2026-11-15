@@ -84,6 +84,16 @@ jobs:
           echo "$LIVE_TAG" >> Kanallar/trt2.m3u8
           echo "#EXT-X-STREAM-INF:BANDWIDTH=5000000,RESOLUTION=1920x1080" >> Kanallar/trt2.m3u8
           echo "$URL_TRT2" >> Kanallar/trt2.m3u8
+
+          # 8. Bizim Ev TV (Gen 1 Chromecast Özel)
+          URL_BIZIMEV_CC="https://youtube.com/@bizimevtv2000/live"
+          STREAM_BIZIMEV_CC=$(yt-dlp --cookies cookies.txt --remote-components ejs:github -f "95/94/best[height<=720][fps<=30][vcodec^=avc1]/b[height<=720]" -g "$URL_BIZIMEV_CC") || true
+          if [ -n "$STREAM_BIZIMEV_CC" ]; then
+            echo "#EXTM3U" > Kanallar/bizimev_cc.m3u8
+            echo "$LIVE_TAG" >> Kanallar/bizimev_cc.m3u8
+            echo "#EXT-X-STREAM-INF:BANDWIDTH=1280000" >> Kanallar/bizimev_cc.m3u8
+            echo "$STREAM_BIZIMEV_CC" >> Kanallar/bizimev_cc.m3u8
+          fi
           
           rm -f cookies.txt
 
