@@ -69,7 +69,7 @@ jobs:
           echo "$URL_TRT1" >> Kanallar/trt1.m3u8
 
           # 6. TRT 1 Yedek 1080p (Referer Korumali)
-          URL_TRT1YEDEK="https://tv-trt1-avrupa.medya.trt.com.tr/master_1080.m3u8"
+          URL_TRT1YEDEK="https://tv-trtavrupa.medya.trt.com.tr/master_1080.m3u8"
           echo "#EXTM3U" > Kanallar/trt1yedek.m3u8
           echo "#EXT-X-STREAM-INF:BANDWIDTH=5000000,RESOLUTION=1920x1080" >> Kanallar/trt1yedek.m3u8
           echo "$URL_TRT1YEDEK" >> Kanallar/trt1yedek.m3u8
