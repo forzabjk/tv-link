@@ -95,19 +95,16 @@ jobs:
             echo "$STREAM_BIZIMEV_CC" >> Kanallar/bizimev_cc.m3u8
           fi
 
-          # 9. TV5MONDE Europe 1080p (Saf Akış)
-          URL_TV5_MASTER="https://ott.tv5monde.com/Content/HLS/Live/channel(europe)/variant.m3u8"
-          SUB_TV5=$(curl -s -H "Referer: https://tv5monde.com" -H "User-Agent: Mozilla/5.0" "$URL_TV5_MASTER" | grep -v "^#" | tail -n 1)
+          # 9. TV5MONDE Europe (Chromecast)
+          SUB_TV5=$(curl -s -H "Referer: https://tv5monde.com" -H "User-Agent: Mozilla/5.0" "$URL_TV5" | grep -v "^#" | tail -n 1)
           if [ -n "$SUB_TV5" ]; then
             if [[ "$SUB_TV5" != http* ]]; then
-              SUB_TV5="https://tv5monde.com"
+              SUB_TV5="${URL_TV5%/*}/$SUB_TV5"
             fi
             echo "#EXTM3U" > Kanallar/tv5monde_cc.m3u8
             echo "$LIVE_TAG" >> Kanallar/tv5monde_cc.m3u8
             echo "$SUB_TV5" >> Kanallar/tv5monde_cc.m3u8
           fi
-          
-          
           
           rm -f cookies.txt
 
