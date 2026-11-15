@@ -1,0 +1,7 @@
+#EXTM3U
+#EXTINF:-1,TRT 1
+#EXTVLCOPT:http-referrer=https://www.tabii.com
+#EXTVLCOPT:http-user-agent=
+https://tv-trt1.medya.trt.com.tr/master_1080.m3u8
+#EXTINF:-1,TRT 1 (Avrupa Yedek)
+https://tv-trt1-avrupa.medya.trt.com.tr/master_1080.m3u8
