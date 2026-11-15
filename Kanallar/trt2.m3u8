@@ -1,5 +1,4 @@
 #EXTM3U
-#EXTINF:-1,TRT 2
 #EXTVLCOPT:http-referrer=https://www.tabii.com
 #EXTVLCOPT:http-user-agent=
 https://tv-trt2.medya.trt.com.tr/master_1080.m3u8
