@@ -1,4 +1,3 @@
 #EXTM3U
-#EXTVLCOPT:http-referrer=https://www.tabii.com
-#EXTVLCOPT:http-user-agent=
+#EXT-X-STREAM-INF:BANDWIDTH=5000000,RESOLUTION=1920x1080
 https://tv-trt1.medya.trt.com.tr/master_1080.m3u8
