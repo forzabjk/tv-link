@@ -95,14 +95,13 @@ jobs:
             echo "$STREAM_BIZIMEV_CC" >> Kanallar/bizimev_cc.m3u8
           fi
 
-          # 9. TV5MONDE Europe (Gen 1 Chromecast Özel)
+          # 9. TV5MONDE Europe 1080p (Chromecast Uyumlu)
           URL_TV5_CC="https://ott.tv5monde.com/Content/HLS/Live/channel(europe)/variant.m3u8"
-          STREAM_TV5_CC=$(yt-dlp -f "best[height<=720][fps<=30]/b" -g "$URL_TV5_CC") || true
-          if [ -n "$STREAM_TV5_CC" ]; then
-            echo "#EXTM3U" > Kanallar/tv5monde_cc.m3u8
-            echo "#EXT-X-STREAM-INF:BANDWIDTH=1280000" >> Kanallar/tv5monde_cc.m3u8
-            echo "$STREAM_TV5_CC" >> Kanallar/tv5monde_cc.m3u8
-          fi
+          echo "#EXTM3U" > Kanallar/tv5monde_cc.m3u8
+          echo "$LIVE_TAG" >> Kanallar/tv5monde_cc.m3u8
+          echo "#EXT-X-STREAM-INF:BANDWIDTH=5000000,RESOLUTION=1920x1080" >> Kanallar/tv5monde_cc.m3u8
+          echo "$URL_TV5_CC" >> Kanallar/tv5monde_cc.m3u8
+          
           
           rm -f cookies.txt
 
