@@ -68,10 +68,10 @@ jobs:
           echo "#EXT-X-STREAM-INF:BANDWIDTH=5000000,RESOLUTION=1920x1080" >> Kanallar/trt1.m3u8
           echo "$URL_TRT1" >> Kanallar/trt1.m3u8
 
-          # 6. TRT 1 Yedek 1080p (Referer Korumali)
-          URL_TRT1YEDEK="https://tv-trt1-w.medya.trt.com.tr/master_1080.m3u8"
+          # 6. TRT 1 Yedek 720p (Referer Korumali)
+          URL_TRT1YEDEK="https://tv-trt1.medya.trt.com.tr/master_720.m3u8"
           echo "#EXTM3U" > Kanallar/trt1yedek.m3u8
-          echo "#EXT-X-STREAM-INF:BANDWIDTH=5000000,RESOLUTION=1920x1080" >> Kanallar/trt1yedek.m3u8
+          echo "#EXT-X-STREAM-INF:BANDWIDTH=2500000,RESOLUTION=1280x720" >> Kanallar/trt1yedek.m3u8
           echo "$URL_TRT1YEDEK" >> Kanallar/trt1yedek.m3u8
 
           # 7. TRT 2 1080p (Referer Korumali)
