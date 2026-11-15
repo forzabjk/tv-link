@@ -73,13 +73,6 @@ jobs:
           echo "#EXTINF:-1,TRT 1 (Avrupa Yedek)" >> Kanallar/trt1.m3u8
           echo "$URL_TRT1_YEDEK" >> Kanallar/trt1.m3u8
 
-          # 6. TRT 2 (Referer Korumali)
-          URL_TRT2="https://tv-trt2.medya.trt.com.tr/master_1080.m3u8"
-          echo "#EXTM3U" > Kanallar/trt2.m3u8
-          echo "#EXTINF:-1,TRT 2" >> Kanallar/trt2.m3u8
-          echo "#EXTVLCOPT:http-referrer=https://www.tabii.com" >> Kanallar/trt2.m3u8
-          echo "#EXTVLCOPT:http-user-agent=$UA" >> Kanallar/trt2.m3u8
-          echo "$URL_TRT2" >> Kanallar/trt2.m3u8
           
           rm -f cookies.txt
 
