@@ -106,16 +106,19 @@ jobs:
             echo "$SUB_TV5" >> Kanallar/tv5monde_cc.m3u8
           fi
           
-          # 10. NOW TV 720p (Otomatik Token Yenilemeli)
+          # 10. NOW TV 720p (Resmi Yayin + Referer Korumali)
           UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
           RAW_NOW=$(curl -sL -A "$UA" "https://nowtv.com.tr/canli-yayin" | grep -oE 'https://nowtv-live-ad\.ercdn\.net/nowtv/[^"'\'' ]+\.m3u8[^"'\'' ]*' | head -n 1) || true
           URL_NOWTV="${RAW_NOW/playlist.m3u8/nowtv_720p.m3u8}"
           if [ -n "$URL_NOWTV" ]; then
             echo "#EXTM3U" > Kanallar/nowtv.m3u8
             echo "$LIVE_TAG" >> Kanallar/nowtv.m3u8
+            echo "#EXTVLCOPT:http-referrer=https://nowtv.com.tr/" >> Kanallar/nowtv.m3u8
+            echo "#EXTVLCOPT:http-user-agent=$UA" >> Kanallar/nowtv.m3u8
             echo "#EXT-X-STREAM-INF:BANDWIDTH=3000000,RESOLUTION=1280x720" >> Kanallar/nowtv.m3u8
             echo "$URL_NOWTV" >> Kanallar/nowtv.m3u8
           fi
+          
           
           rm -f cookies.txt
 
