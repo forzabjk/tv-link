@@ -106,14 +106,14 @@ jobs:
             echo "$SUB_TV5" >> Kanallar/tv5monde_cc.m3u8
           fi
           
-          # 10. NOW TV (Stabil CDN)
-          URL_NOWTV="https://uycyyuuzyh.turknet.ercdn.net/nphindgytw/nowtv/nowtv_720p.m3u8"
+          # 10. NOW TV (BluTV CDN - Donmasiz Alternatif)
+          URL_NOWTV="https://foxtv.blutv.com/blutv_foxtv_live/live.m3u8"
           echo "#EXTM3U" > Kanallar/nowtv.m3u8
           echo "#EXT-X-START:TIME-OFFSET=-6,PRECISE=YES" >> Kanallar/nowtv.m3u8
           echo "#EXT-X-STREAM-INF:BANDWIDTH=3000000,RESOLUTION=1280x720" >> Kanallar/nowtv.m3u8
           echo "$URL_NOWTV" >> Kanallar/nowtv.m3u8
 
-          
+
           
           rm -f cookies.txt
 
