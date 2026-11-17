@@ -106,11 +106,11 @@ jobs:
             echo "$SUB_TV5" >> Kanallar/tv5monde_cc.m3u8
           fi
           
-          # 10. NOW TV (Kesin Acilan + Donmasiz Tampon)
-          URL_NOWTV="https://uycyyuuzyh.turknet.ercdn.net/nphindgytw/nowtv/nowtv_720p.m3u8"
+          # 10. NOW TV (Alternatif Hizli Sunucu)
+          URL_NOWTV="https://streams.uzunmuhalefet.com/stream/f9368c57-16e5-44a2-a559-46377a476b04.m3u8"
           echo "#EXTM3U" > Kanallar/nowtv.m3u8
-          echo "#EXT-X-START:TIME-OFFSET=-18,PRECISE=NO" >> Kanallar/nowtv.m3u8
-          echo "#EXT-X-STREAM-INF:BANDWIDTH=1500000,RESOLUTION=1280x720" >> Kanallar/nowtv.m3u8
+          echo "#EXT-X-START:TIME-OFFSET=-6,PRECISE=YES" >> Kanallar/nowtv.m3u8
+          echo "#EXT-X-STREAM-INF:BANDWIDTH=3000000,RESOLUTION=1280x720" >> Kanallar/nowtv.m3u8
           echo "$URL_NOWTV" >> Kanallar/nowtv.m3u8
 
           
