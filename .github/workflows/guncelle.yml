@@ -107,7 +107,7 @@ jobs:
           fi
           
           # 10. NOW TV (BluTV CDN - Donmasiz Alternatif)
-          URL_NOWTV="https://foxtv.blutv.com/blutv_foxtv_live/live.m3u8"
+          URL_NOWTV="http://116.202.238.88/FOXTV_TR/index.m3u8"
           echo "#EXTM3U" > Kanallar/nowtv.m3u8
           echo "#EXT-X-START:TIME-OFFSET=-6,PRECISE=YES" >> Kanallar/nowtv.m3u8
           echo "#EXT-X-STREAM-INF:BANDWIDTH=3000000,RESOLUTION=1280x720" >> Kanallar/nowtv.m3u8
