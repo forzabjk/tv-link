@@ -105,7 +105,7 @@ jobs:
             echo "$LIVE_TAG" >> Kanallar/tv5monde_cc.m3u8
             echo "$SUB_TV5" >> Kanallar/tv5monde_cc.m3u8
           fi
- 
+          
           # 10. NOW TV 720p (Otomatik Token Yenilemeli)
           UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
           RAW_NOW=$(curl -sL -A "$UA" "https://nowtv.com.tr/canli-yayin" | grep -oE 'https://nowtv-live-ad\.ercdn\.net/nowtv/[^"'\'' ]+\.m3u8[^"'\'' ]*' | head -n 1) || true
